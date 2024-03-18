@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: QrCloud
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  datasource:
+    url: jdbc:mariadb://${MYSQL_HOST:localhost}:3306/qr_cloud
+    username: PUBLIC
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver

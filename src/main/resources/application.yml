@@ -10,6 +10,6 @@ spring:
     show-sql: true
   datasource:
     url: jdbc:mariadb://${MYSQL_HOST:localhost}:3306/qr_cloud
-    username: PUBLIC
-    password:
+    username: root
+    password: azerty
     driver-class-name: org.mariadb.jdbc.Driver

@@ -1,5 +1,5 @@
 package org.tamikalat.qrcloud.users;
 
-public record AuthenticationResponse(String token) {
+public record AuthenticationResponse(String token, User user) {
 
 }

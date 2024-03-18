@@ -1,4 +1,4 @@
-package org.tamikalat.qrcloud.users;
+package org.tamikalat.qrcloud.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +9,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.tamikalat.qrcloud.users.User;
 
 @Service
 public class JwtService {

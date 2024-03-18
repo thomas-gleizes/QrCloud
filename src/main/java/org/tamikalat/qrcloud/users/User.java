@@ -1,13 +1,8 @@
 package org.tamikalat.qrcloud.users;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -29,19 +24,18 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(name = "first_name", nullable = false)
   private String firstname;
 
-  @Column(nullable = false)
+  @Column(name = "last_name", nullable = false)
   private String lastname;
 
-  @Column(unique = true, nullable = false)
+  @Column(name = "email", unique = true, nullable = false)
   private String email;
 
-  @Column(nullable = false)
+  @Column(name = "password", nullable = false)
+  @JsonIgnore()
   private String password;
-
-  private String username;
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
@@ -52,6 +46,7 @@ public class User implements UserDetails {
   private Date updatedAt;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "role", nullable = false)
   private Role role;
 
   @Override

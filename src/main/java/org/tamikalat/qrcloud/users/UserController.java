@@ -2,6 +2,8 @@ package org.tamikalat.qrcloud.users;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,17 +23,22 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginBody request) {
     return ResponseEntity.ok(
-        new AuthenticationResponse(authenticationService.authenticate(request)));
+        (authenticationService.authenticate(request)));
   }
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterBody request) {
-    return ResponseEntity.ok(new AuthenticationResponse(authenticationService.register(request)));
+    return ResponseEntity.ok((authenticationService.register(request)));
   }
 
   @GetMapping("/me")
   public ResponseEntity<String> profil() {
-    return ResponseEntity.ok("ok");
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    final String username = (String) auth.getPrincipal();
+
+    System.out.println(username);
+
+    return ResponseEntity.ok(username);
   }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.tamikalat.qrcloud.jwt.JwtService;
 
 @Service
 public class AuthenticationService {
@@ -26,29 +27,29 @@ public class AuthenticationService {
     this.authenticationManager = authenticationManager;
   }
 
-  public String register(RegisterBody request) {
+  public AuthenticationResponse register(RegisterBody request) {
     User user = new User();
 
     user.setEmail(request.getEmail());
     user.setFirstname(request.getFirstname());
     user.setLastname(request.getLastname());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setRole(Role.ADMIN);
+    user.setRole(Role.USER);
 
     user = userRepository.save(user);
 
-    return jwtService.generateToken(user);
+    return new AuthenticationResponse(jwtService.generateToken(user), user);
   }
 
-  public String authenticate(LoginBody request) {
+  public AuthenticationResponse authenticate(LoginBody request) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
         request.getEmail(),
         request.getPassword()
     ));
 
-    User user = userRepository.findByUsername(request.getEmail())
+    User user = userRepository.findByEmail(request.getEmail())
         .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
 
-    return jwtService.generateToken(user);
+    return new AuthenticationResponse(jwtService.generateToken(user), user);
   }
 }

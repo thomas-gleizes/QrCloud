@@ -32,13 +32,11 @@ public class UserController {
   }
 
   @GetMapping("/me")
-  public ResponseEntity<String> profil() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    final String username = (String) auth.getPrincipal();
+  public ResponseEntity<User> profil() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = (User) authentication.getPrincipal();
 
-    System.out.println(username);
-
-    return ResponseEntity.ok(username);
+    return ResponseEntity.ok(user);
   }
 
 }

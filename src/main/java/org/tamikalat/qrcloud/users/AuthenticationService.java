@@ -5,7 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.tamikalat.qrcloud.jwt.JwtService;
+import org.tamikalat.qrcloud.tokens.JwtService;
 
 @Service
 public class AuthenticationService {

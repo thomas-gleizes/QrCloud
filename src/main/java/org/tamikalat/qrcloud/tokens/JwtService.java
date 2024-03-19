@@ -1,10 +1,11 @@
-package org.tamikalat.qrcloud.jwt;
+package org.tamikalat.qrcloud.tokens;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,11 @@ import org.tamikalat.qrcloud.users.User;
 public class JwtService {
 
   private final String SECRET_TOKEN = "15d5c9389f9e849346013657a0c50d3b3f4389b51f90d1773d19966badb8aa32";
+  private final TokenRepository tokenRepository;
+
+  public JwtService(TokenRepository tokenRepository) {
+    this.tokenRepository = tokenRepository;
+  }
 
   private Claims extractAllClaims(String token) {
     return Jwts.parser()
@@ -37,23 +43,43 @@ public class JwtService {
     return extractClaims(token, Claims::getExpiration);
   }
 
+  public String extractHash(String token) {
+    String hash = token.split("\\.")[2];
+    System.out.println("hash :" + hash);
+    return hash;
+  }
+
   public boolean isValid(String token, UserDetails userDetails) {
     String username = extractUsername(token);
-    return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && isRegistered(
+        token);
   }
 
   private boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }
 
+  public boolean isRegistered(String token) {
+    Optional<Token> find = tokenRepository.findByHash(extractHash(token));
+    return find.isPresent();
+  }
+
   public String generateToken(User user) {
-    return Jwts.builder()
+    final String jwt = Jwts.builder()
         .subject(user.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
         .signWith(this.getSignInKey())
         .compact();
 
+    Token token = new Token();
+
+    token.setHash(extractHash(jwt));
+    token.setUser(user);
+
+    tokenRepository.save(token);
+
+    return jwt;
   }
 
   private SecretKey getSignInKey() {

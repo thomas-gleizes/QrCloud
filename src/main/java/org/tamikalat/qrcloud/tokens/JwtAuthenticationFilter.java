@@ -1,4 +1,4 @@
-package org.tamikalat.qrcloud.jwt;
+package org.tamikalat.qrcloud.tokens;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -7,9 +7,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
   datasource:
-    url: jdbc:mariadb://${MYSQL_HOST:localhost}:3306/qr_cloud
-    username: root
-    password: azerty
+    url: jdbc:mariadb://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/qr_cloud
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASS}
     driver-class-name: org.mariadb.jdbc.Driver

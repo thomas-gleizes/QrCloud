@@ -1,12 +1,15 @@
 package org.tamikalat.qrcloud.users;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.apache.coyote.Request;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,8 +36,13 @@ public class UserController {
 
   @GetMapping("/me")
   public ResponseEntity<User> profil() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return ResponseEntity.ok((User) authentication.getPrincipal());
+    return ResponseEntity.ok(authenticationService.getCurrent());
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) {
+    authenticationService.logout(authorizationHeader);
+    return ResponseEntity.ok("logout");
   }
 
 }

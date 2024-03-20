@@ -33,6 +33,9 @@ public class Token {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
+  @Column(name = "is_activate")
+  private Boolean isActivate;
+
   @CreationTimestamp
   @Column(name = "created_at", updatable = false, nullable = false)
   private Date createdAt;

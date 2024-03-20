@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class LoggingInterceptor implements HandlerInterceptor {
 
-  Logger logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+  private final Logger logger = LoggerFactory.getLogger(LoggingInterceptor.class);
 
 
   @Override

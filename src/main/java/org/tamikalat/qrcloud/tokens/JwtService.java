@@ -59,7 +59,7 @@ public class JwtService {
 
   public boolean isRegistered(String token) {
     Optional<Token> find = tokenRepository.findByHash(extractHash(token));
-    return find.isPresent();
+    return find.isPresent() && find.get().getIsActivate();
   }
 
   public String generateToken(User user) {
@@ -74,6 +74,7 @@ public class JwtService {
 
     token.setHash(extractHash(jwt));
     token.setUser(user);
+    token.setIsActivate(true);
 
     tokenRepository.save(token);
 
@@ -83,5 +84,14 @@ public class JwtService {
   private SecretKey getSignInKey() {
     byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_TOKEN);
     return Keys.hmacShaKeyFor(keyBytes);
+  }
+
+  public void disabledToken(String jwt) {
+    String hash = this.extractHash(jwt);
+    Token token = tokenRepository.findByHash(hash).orElseThrow();
+
+    token.setIsActivate(false);
+
+    tokenRepository.save(token);
   }
 }

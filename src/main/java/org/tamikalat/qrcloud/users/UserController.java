@@ -34,9 +34,7 @@ public class UserController {
   @GetMapping("/me")
   public ResponseEntity<User> profil() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    User user = (User) authentication.getPrincipal();
-
-    return ResponseEntity.ok(user);
+    return ResponseEntity.ok((User) authentication.getPrincipal());
   }
 
 }

@@ -44,9 +44,7 @@ public class JwtService {
   }
 
   public String extractHash(String token) {
-    String hash = token.split("\\.")[2];
-    System.out.println("hash :" + hash);
-    return hash;
+    return token.split("\\.")[2];
   }
 
   public boolean isValid(String token, UserDetails userDetails) {

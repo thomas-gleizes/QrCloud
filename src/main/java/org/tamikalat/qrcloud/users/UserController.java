@@ -20,14 +20,13 @@ public class UserController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginBody request) {
-    return ResponseEntity.ok(
-        (authenticationService.authenticate(request)));
+  public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginBody body) {
+    return ResponseEntity.ok((authenticationService.authenticate(body)));
   }
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterBody request) {
-    return ResponseEntity.ok((authenticationService.register(request)));
+  public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterBody body) {
+    return ResponseEntity.ok((authenticationService.register(body)));
   }
 
   @GetMapping("/me")
